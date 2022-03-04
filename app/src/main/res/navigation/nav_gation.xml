@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_gation"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.example.wanandroid.ui.home.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/square"
+        android:name="com.example.wanandroid.ui.square.SquareFragment"
+        android:label="square_fragment"
+        tools:layout="@layout/square_fragment" />
+    <fragment
+        android:id="@+id/wechat"
+        android:name="com.example.wanandroid.ui.wechat.WechatFragment"
+        android:label="wechat_fragment"
+        tools:layout="@layout/wechat_fragment" />
+    <fragment
+        android:id="@+id/system"
+        android:name="com.example.wanandroid.ui.system.SystemFragment"
+        android:label="system_fragment"
+        tools:layout="@layout/system_fragment" />
+    <fragment
+        android:id="@+id/project"
+        android:name="com.example.wanandroid.ui.project.ProjectFragment"
+        android:label="project_fragment"
+        tools:layout="@layout/project_fragment" />
+</navigation>
