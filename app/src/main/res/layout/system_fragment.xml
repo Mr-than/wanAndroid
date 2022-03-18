@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.system.SystemFragment">
+    xmlns:toolbar="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="444444" />
+        tools:context=".ui.system.SystemFragment">
 
-</FrameLayout>
+        <androidx.appcompat.widget.Toolbar
+            toolbar:title="体系"
+            toolbar:titleTextColor="@color/white"
+            android:background="#1A237E"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/system_toolbar" />
+
+    </LinearLayout>
+</layout>
