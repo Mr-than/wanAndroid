@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:paddingLeft="20dp">
+    android:paddingLeft="10dp">
 
     <LinearLayout
         android:layout_width="200dp"
@@ -17,39 +17,35 @@
 
         <TextView
             android:id="@+id/just_red_item_source"
-            android:padding="1dp"
-            android:background="@drawable/red_border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/red_border"
+            android:padding="1dp"
             android:text="公众号"
-            android:textSize="8dp"
-            android:textColor="#FF0000"/>
+            android:textColor="#FF0000"
+            android:textSize="8dp" />
 
         <TextView
             android:id="@+id/just_red_item_author"
-            android:textSize="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ASCLL13" />
+            android:layout_marginLeft="10dp"
+            android:text="ASCLL13"
+            android:textSize="10dp" />
 
     </LinearLayout>
 
 
     <TextView
         android:id="@+id/just_red_item_content"
-        android:layout_marginRight="20dp"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="打开父布局啊奥地利看见反垃圾的啊手动阀第三方吧啊，室内部分单独，是"
         android:textColor="@color/black"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/just_red_item_kinds"
@@ -66,9 +62,9 @@
 
     <TextView
         android:id="@+id/just_red_item_time"
-        android:layout_marginRight="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         android:text="2022-03-07 18:04"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

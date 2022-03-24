@@ -7,11 +7,13 @@ import android.view.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wanandroid.R
+import com.example.wanandroid.databean.applicationdata.Article
 import com.example.wanandroid.databinding.HomeFragmentBinding
 import com.example.wanandroid.model.GamItemTouchCallback
 import com.example.wanandroid.ui.adapter.HomeAdapter
@@ -54,15 +56,19 @@ class HomeFragment : Fragment() {
 
         binding.homeRv.layoutManager = manner
 
-        val a= ArrayList<String>()
-        for (aa in 0..50){
-            a.add("$aa")
-        }
 
-        val adapter=HomeAdapter(a)
 
+
+        val list=ArrayList<Article>()
+        val adapter=HomeAdapter(list)
         binding.homeRv.adapter=adapter
 
+        viewModel.articleData()
+        viewModel._articleData.observe(requireActivity()){
+            adapter.update(it)
+        }
+
+        /*
         binding.homeRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                super.onScrollStateChanged(recyclerView, newState)
@@ -83,6 +89,10 @@ class HomeFragment : Fragment() {
 
         //val aaa=ItemTouchHelper(GamItemTouchCallback(dpToPx(requireContext(),160f),adapter))
         //aaa.attachToRecyclerView(binding.homeRv)
+
+*/
+
+
     }
 
     private fun dpToPx(context: Context, value: Float): Int {

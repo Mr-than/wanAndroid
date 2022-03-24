@@ -30,15 +30,11 @@
         android:id="@+id/none_item_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="打开父布局啊奥地利看见反垃圾的啊手动阀第三方吧啊，室内部分单独，是"
         android:textColor="@color/black"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/none_item_kinds"
@@ -66,6 +62,7 @@
 
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_marginTop="8dp"
