@@ -7,6 +7,7 @@
     android:paddingLeft="10dp">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="100dp"
         android:layout_height="20dp"
         android:gravity="center|left"
@@ -30,57 +31,66 @@
             android:id="@+id/photo_item_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="ASCLL13" />
+            android:layout_marginLeft="10dp" />
 
     </LinearLayout>
 
     <ImageView
+        android:layout_marginTop="5dp"
         android:id="@+id/photo_item_photo"
-        android:layout_width="150dp"
+        android:layout_width="50dp"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/test"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <TextView
         android:id="@+id/photo_item_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="1dp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/photo_item_photo"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="0.18" />
 
-    <TextView
-        android:id="@+id/photo_item_kinds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="开源项目主Tab/未分类"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.913" />
+
 
     <TextView
         android:id="@+id/photo_item_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2022-03-07 18:04"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.937"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.009" />
+
+    <TextView
+        android:textSize="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/photo_item_kinds"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.021"
+        app:layout_constraintStart_toEndOf="@+id/photo_item_photo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.909" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="8dp"
+        android:background="#D1CCCC"
+        app:layout_constraintTop_toBottomOf="@+id/photo_item_kinds"
+        tools:layout_editor_absoluteX="16dp" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

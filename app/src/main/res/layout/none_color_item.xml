@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
+    android:minHeight="80dp"
     android:layout_marginTop="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
@@ -20,8 +21,7 @@
         <TextView
             android:id="@+id/none_item_author"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ASCLL13" />
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
@@ -40,20 +40,18 @@
         android:id="@+id/none_item_kinds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="开源项目主Tab/未分类"
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.813" />
+        app:layout_constraintTop_toBottomOf="@+id/none_item_content"
+        app:layout_constraintVertical_bias="0.407" />
 
     <TextView
         android:id="@+id/none_item_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2022-03-07 18:04"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.937"
@@ -65,7 +63,7 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:background="#D1CCCC"
         app:layout_constraintTop_toBottomOf="@+id/none_item_kinds"
         tools:layout_editor_absoluteX="16dp" />

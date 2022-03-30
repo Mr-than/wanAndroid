@@ -25,6 +25,8 @@ class HomeFragment : Fragment() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var binding:HomeFragmentBinding
     private var pageNumber=0
+    private var num:Int=0
+    private var p:Int=0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding= HomeFragmentBinding.inflate(inflater)
@@ -60,25 +62,33 @@ class HomeFragment : Fragment() {
 
 
         val list=ArrayList<Article>()
-        val adapter=HomeAdapter(list)
-        binding.homeRv.adapter=adapter
+        val adapter=HomeAdapter(list,requireContext())
 
-        viewModel.articleData()
-        viewModel._articleData.observe(requireActivity()){
-            adapter.update(it)
+        viewModel.setBanner()
+        viewModel.bannerPhoto.observe(requireActivity()){
+            adapter.setBanner(it)
+            viewModel.articleData(0)
+            binding.homeRv.adapter=adapter
         }
 
-        /*
+        viewModel.articleData.observe(requireActivity()){
+            if(!list.containsAll(it)){
+                list.addAll(it)
+                num+=it.size
+                ++p
+                adapter.update(list)
+            }
+
+        }
+
+
         binding.homeRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                super.onScrollStateChanged(recyclerView, newState)
                if(newState==RecyclerView.SCROLL_STATE_IDLE) {
                    val position: Int = manner.findLastVisibleItemPosition()
-                   if (position >= a.size - 3) {
-                       for (aaa in a.size + 1..a.size + 100) {
-                           a.add("$aaa")
-                       }
-                       adapter.update(a)
+                   if (position >= num - 3) {
+                       viewModel.articleData(p)
                    }
                }
            }
@@ -89,10 +99,6 @@ class HomeFragment : Fragment() {
 
         //val aaa=ItemTouchHelper(GamItemTouchCallback(dpToPx(requireContext(),160f),adapter))
         //aaa.attachToRecyclerView(binding.homeRv)
-
-*/
-
-
     }
 
     private fun dpToPx(context: Context, value: Float): Int {

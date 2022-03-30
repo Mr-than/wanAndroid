@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
+    android:minHeight="80dp"
     android:paddingLeft="10dp">
 
     <LinearLayout
@@ -38,7 +39,6 @@
 
     <TextView
         android:id="@+id/just_blue_item_content"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -58,7 +58,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.964" />
+        app:layout_constraintVertical_bias="0.918" />
 
     <TextView
         android:id="@+id/just_blue_item_time"
@@ -71,5 +71,14 @@
         app:layout_constraintHorizontal_bias="0.937"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.009" />
+
+    <View
+        android:layout_marginTop="5dp"
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#D1CCCC"
+        app:layout_constraintTop_toBottomOf="@+id/just_blue_item_kinds"
+        tools:layout_editor_absoluteX="10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

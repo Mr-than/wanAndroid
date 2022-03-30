@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
+    android:minHeight="80dp"
     android:paddingLeft="10dp">
 
     <LinearLayout
@@ -41,7 +42,6 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/blue_border"
             android:padding="1dp"
-            android:text="公众号"
             android:textColor="#86E4EF"
             android:textSize="8dp" />
 
@@ -50,7 +50,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="ASCLL13"
             android:textSize="10dp" />
 
     </LinearLayout>
@@ -70,25 +69,32 @@
         android:id="@+id/tree_colors_kinds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="开源项目主Tab/未分类"
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.964" />
+        app:layout_constraintVertical_bias="0.918" />
 
     <TextView
         android:id="@+id/tree_colors_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:text="2022-03-07 18:04"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.937"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.009" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="5dp"
+        android:background="#D1CCCC"
+        app:layout_constraintTop_toBottomOf="@+id/tree_colors_kinds"
+        tools:layout_editor_absoluteX="4dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

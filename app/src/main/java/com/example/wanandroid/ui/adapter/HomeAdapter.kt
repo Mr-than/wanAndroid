@@ -1,20 +1,27 @@
 package com.example.wanandroid.ui.adapter
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.example.wanandroid.R
+import com.example.wanandroid.base.APP
 import com.example.wanandroid.databean.applicationdata.Article
 import com.example.wanandroid.model.MyBanner
-//import com.example.wanandroid.model.Test
-import kotlin.collections.ArrayList
+import com.example.wanandroid.requestinterfaces.BannerPhoto
+import com.example.wanandroid.retrofit.MyRetrofit
+import com.google.gson.JsonObject
 
-class HomeAdapter(private val list:ArrayList<Article>) : RecyclerView.Adapter<HomeAdapter.BaseViewHolder>() {
+class HomeAdapter(private val list:ArrayList<Article>,private val context:Context) : RecyclerView.Adapter<HomeAdapter.BaseViewHolder>() {
 
     companion object{
         const val photoItem:Int=1
@@ -25,9 +32,13 @@ class HomeAdapter(private val list:ArrayList<Article>) : RecyclerView.Adapter<Ho
         const val redAndBlueItem:Int=8
         const val treeColorsItem:Int=9
     }
+
+    private var hasData:Boolean=false
     private val header:Int=0
     private val folder:Int=6
     private val empty:Int=7
+
+    private lateinit var bannerList:List<String>
 
     private val aList= ArrayList<Article>()
     init {
@@ -93,6 +104,7 @@ class HomeAdapter(private val list:ArrayList<Article>) : RecyclerView.Adapter<Ho
         val so:TextView=itemView.findViewById(R.id.just_blue_item_source)
     }
     inner class PhotoViewHolder(itemView: View) : BaseViewHolder(itemView){
+        val photo:ImageView=itemView.findViewById(R.id.photo_item_photo)
         val au:TextView=itemView.findViewById(R.id.photo_item_author)
         val data:TextView=itemView.findViewById(R.id.photo_item_time)
         val content:TextView=itemView.findViewById(R.id.photo_item_content)
@@ -131,11 +143,10 @@ class HomeAdapter(private val list:ArrayList<Article>) : RecyclerView.Adapter<Ho
 
         when(holder){
             is HeaderHolder->{
-                a.setBanner(holder.vp2!!, listOf(R.drawable.test, R.drawable.test1, R.drawable.test2))
+                a.setBanner(holder.vp2!!, bannerList,context)
             }
             is FlooderViewHolder->{}
             is EmptyViewHolder->{}
-
 
 
             is CommendHolder->{
@@ -145,6 +156,7 @@ class HomeAdapter(private val list:ArrayList<Article>) : RecyclerView.Adapter<Ho
                 holder.content.text=aList[position].getContent()
             }
             is PhotoViewHolder->{
+                Glide.with(context).load(aList[position].getPhoto()).into(holder.photo)
                 holder.au.text = aList[position].getAuName()
                 holder.data.text=aList[position].getShareData()
                 holder.kind.text=aList[position].getChapterName()+"/"+aList[position].getSuperChapterName()
@@ -242,8 +254,10 @@ class HomeAdapter(private val list:ArrayList<Article>) : RecyclerView.Adapter<Ho
 
     fun update(newList:List<Article>){
 
-        (newList as ArrayList).add(0,aList[0])
-
+        if(!hasData) {
+            hasData=true
+            (newList as ArrayList).add(0, aList[0])
+        }
         val result:DiffUtil.DiffResult=DiffUtil.calculateDiff(UpData(aList,newList),true)
         aList.clear()
         aList.addAll(newList)
@@ -260,6 +274,10 @@ class HomeAdapter(private val list:ArrayList<Article>) : RecyclerView.Adapter<Ho
     }
 */
 
-
+    fun setBanner(list:List<String>){
+        if(!::bannerList.isInitialized) {
+            this.bannerList = list
+        }
+    }
 
 }

@@ -21,6 +21,6 @@ data class Article(
     fun getSuperChapterName()=superChapterName
     fun getContent()=content
     fun getSource()=source
-
+    fun getPhoto()=photo
 
 }

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.wanandroid.R
 import com.example.wanandroid.base.APP
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -25,7 +26,7 @@ class MyBanner {
     private lateinit var viewPager2: ViewPager2
 
 
-    fun setBanner(viewPager2: ViewPager2, img:List<Int>){
+    fun setBanner(viewPager2: ViewPager2, img:List<String>,context:Context){
 
         if(!isFirst){
             return
@@ -35,13 +36,13 @@ class MyBanner {
 
         this.viewPager2=viewPager2
 
-        val im= mutableListOf<Int>()
+        val im= mutableListOf<String>()
 
 
         for (i in 0..1000){
             im.addAll(img)
         }
-        val mViewPagerAdapter=InnerAdapter(im)
+        val mViewPagerAdapter=InnerAdapter(im,context)
         viewPager2.adapter = mViewPagerAdapter
 
         viewPager2.setCurrentItem(img.size*100, false)
@@ -79,7 +80,7 @@ class MyBanner {
     }
 
 
-    private class InnerAdapter(val list: List<Int>): RecyclerView.Adapter<InnerAdapter.InnerViewHolder>() {
+    private class InnerAdapter(val list: List<String>,val context: Context): RecyclerView.Adapter<InnerAdapter.InnerViewHolder>() {
 
         private inner class InnerViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
             val imageView:ImageView=itemView.findViewById(R.id.banner_iv)
@@ -90,7 +91,7 @@ class MyBanner {
         }
 
         override fun onBindViewHolder(holder: InnerViewHolder, position: Int) {
-            holder.imageView.setImageResource(list[position])
+            Glide.with(context).load(list[position]).into(holder.imageView)
         }
 
         override fun getItemCount(): Int {

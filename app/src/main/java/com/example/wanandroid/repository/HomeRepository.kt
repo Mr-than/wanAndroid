@@ -3,6 +3,7 @@ package com.example.wanandroid.repository
 
 import android.util.Log
 import com.example.wanandroid.databean.applicationdata.Article
+import com.example.wanandroid.databean.originaldata.Banner
 import com.example.wanandroid.databean.originaldata.CommendArticle
 import com.example.wanandroid.databean.originaldata.TopArticle
 import com.example.wanandroid.requestinterfaces.*
@@ -14,10 +15,10 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import java.lang.Exception
 import java.util.ArrayList
 
@@ -30,24 +31,25 @@ object HomeRepository {
             .baseUrl("https://www.wanandroid.com")
             .builder()
 
-    fun getHomeData(observer: Observer<List<Article>>){
+    fun getHomeData(hasData:Boolean,p:Int,observer: Observer<List<Article>>){
 
             Observable.create(ObservableOnSubscribe<List<String>> { t ->
 
                 scope.launch {
+                        val a = async {
 
-                    val a=async {
+                                val homeTopService: HomeTopService
+                                var data: String? = null
+                                try {
+                                    homeTopService = myRetrofit.create(HomeTopService::class.java)
+                                    data = homeTopService.topArticle
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                                data!!
 
-                        val homeTopService: HomeTopService
-                        var data:String?=null
-                        try {
-                            homeTopService= myRetrofit.create(HomeTopService::class.java)
-                            data= homeTopService.topArticle
-                        }catch (e:Exception){
-                            e.printStackTrace()
                         }
-                        data
-                    }
+
 
                     val b=async {
                         val homeCommendService:HomeCommendService
@@ -55,7 +57,7 @@ object HomeRepository {
 
                         try {
                             homeCommendService= myRetrofit.create(HomeCommendService::class.java)
-                            data=homeCommendService.getCommendData("0")
+                            data=homeCommendService.getCommendData("$p")
                         }catch (e:Exception){
                             e.printStackTrace()
                         }
@@ -64,7 +66,9 @@ object HomeRepository {
 
                     val data=ArrayList<String>(2)
 
-                    data.add(a.await().toString())
+                    if(!hasData) {
+                        data.add(a.await().toString())
+                    }
                     data.add(b.await().toString())
                     t.onNext(data)
                 }
@@ -73,56 +77,62 @@ object HomeRepository {
                     val l=ArrayList<Article>()
 
                     val gson=Gson()
+                    var topArticle:TopArticle?=null
+                    if(!hasData) {
+                        topArticle = gson.fromJson(data[0], object : TypeToken<TopArticle>() {}.type)
+                    }
 
-                    val topArticle:TopArticle=gson.fromJson(data[0],object:TypeToken<TopArticle>(){}.type)
-                    val commendArticle:CommendArticle=gson.fromJson(data[1],object:TypeToken<CommendArticle>(){}.type)
+
+                    val commendArticle:CommendArticle=gson.fromJson(if (data.size>1){data[1]}else{data[0]},object:TypeToken<CommendArticle>(){}.type)
 
 
                     try {
-                        for (i in 0 until topArticle.data.size) {
+                        if (!hasData){
+                            for (i in 0 until topArticle!!.data.size) {
 
-                            val topType: Int = if (i == 0) {
-                                HomeAdapter.firstTopItem
-                            } else if (topArticle.data[i].fresh && topArticle.data[i].tags.isNotEmpty()) {
-                                HomeAdapter.treeColorsItem
-                            } else if (topArticle.data[i].fresh && topArticle.data[i].tags.isEmpty()) {
-                                HomeAdapter.firstTopItem
-                            } else if (topArticle.data[i].tags[0].name.isNotEmpty()) {
-                                HomeAdapter.redAndBlueItem
-                            } else {
-                                HomeAdapter.justRedItem
-                            }
+                                val topType: Int = if (i == 0) {
+                                    HomeAdapter.firstTopItem
+                                } else if (topArticle.data[i].fresh && topArticle.data[i].tags.isNotEmpty()) {
+                                    HomeAdapter.treeColorsItem
+                                } else if (topArticle.data[i].fresh && topArticle.data[i].tags.isEmpty()) {
+                                    HomeAdapter.firstTopItem
+                                } else if (topArticle.data[i].tags.isNotEmpty()) {
+                                    HomeAdapter.redAndBlueItem
+                                } else {
+                                    HomeAdapter.justRedItem
+                                }
 
 
 
-                            l.add(
-                                Article(
-                                    topType,
-                                    topArticle.data[i].link,
-                                    topArticle.data[i].envelopePic,
-                                    topArticle.data[i].author.ifEmpty { topArticle.data[i].shareUser },
-                                    topArticle.data[i].niceShareDate,
-                                    topArticle.data[i].chapterName,
-                                    topArticle.data[i].superChapterName,
-                                    if (topArticle.data[i].tags.isNotEmpty()) {
-                                        topArticle.data[i].tags[0].name
-                                    } else {
-                                        null
-                                    },
-                                    topArticle.data[i].title,
-                                    topArticle.data[i].fresh,
-                                    true
+                                l.add(
+                                    Article(
+                                        topType,
+                                        topArticle.data[i].link,
+                                        topArticle.data[i].envelopePic,
+                                        topArticle.data[i].author.ifEmpty { topArticle.data[i].shareUser },
+                                        topArticle.data[i].niceShareDate,
+                                        topArticle.data[i].chapterName,
+                                        topArticle.data[i].superChapterName,
+                                        if (topArticle.data[i].tags.isNotEmpty()) {
+                                            topArticle.data[i].tags[0].name
+                                        } else {
+                                            null
+                                        },
+                                        topArticle.data[i].title,
+                                        topArticle.data[i].fresh,
+                                        true
+                                    )
                                 )
-                            )
 
-                        }
+                            }
+                    }
 
                         for (i in 0 until commendArticle.data.datas.size) {
 
                             val commendType =
                                 if (commendArticle.data.datas[i].fresh && commendArticle.data.datas[i].tags.isNotEmpty()) {
                                     HomeAdapter.redAndBlueItem
-                                } else if (commendArticle.data.datas[i].tags.isNotEmpty()) {
+                                } else if (commendArticle.data.datas[i].tags.isNotEmpty()&&commendArticle.data.datas[i].envelopePic.isEmpty()) {
                                     HomeAdapter.justBlueItem
                                 } else if (commendArticle.data.datas[i].envelopePic.isNotEmpty()) {
                                     HomeAdapter.photoItem
@@ -149,13 +159,10 @@ object HomeRepository {
                                     false
                                 )
                             )
-
-
                         }
                     }catch (e:Exception){
                         e.printStackTrace()
                     }
-
                     l
                 }
             .subscribeOn(Schedulers.newThread())
@@ -163,4 +170,13 @@ object HomeRepository {
     }
 
 
+    fun getBanner()=flow{
+        val bannerPhoto:BannerPhoto= myRetrofit.create(BannerPhoto::class.java)
+        val banner=bannerPhoto.url
+        emit(banner)
+    }.map {
+        val gson=Gson()
+        val banner:Banner=gson.fromJson(it,object :TypeToken<Banner>(){}.type)
+        banner
+    }.flowOn(Dispatchers.IO)
 }
