@@ -15,6 +15,7 @@ data class Article(
 
 
     fun getType()=type
+    fun getUrl()=url
     fun getAuName()=auName
     fun getShareData()=shareData
     fun getChapterName()=chapterName

@@ -8,6 +8,7 @@
     </data>
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.square.SquareFragment">
@@ -19,6 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/square_toolbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/square_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 </layout>

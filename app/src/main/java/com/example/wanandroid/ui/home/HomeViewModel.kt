@@ -1,6 +1,7 @@
 package com.example.wanandroid.ui.home
 
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.wanandroid.databean.applicationdata.Article
@@ -14,10 +15,13 @@ import kotlinx.coroutines.launch
 class HomeViewModel : ViewModel() {
 
     private val articleMuData=MutableLiveData<List<Article>>()
-    val articleData=articleMuData
+    val articleData:LiveData<List<Article>> =articleMuData
 
     private val bannerMuPhoto=MutableLiveData<List<String>>()
     val bannerPhoto=bannerMuPhoto
+
+    private val urlMuLivedata=MutableLiveData<String>()
+    val urlLiveData:LiveData<String> =urlMuLivedata
 
     private var hasData=false
 
@@ -27,7 +31,7 @@ class HomeViewModel : ViewModel() {
             override fun onSubscribe(d: Disposable) {
             }
             override fun onNext(t: List<Article>) {
-                articleData.postValue(t)
+                articleMuData.postValue(t)
             }
             override fun onError(e: Throwable) {
             }
@@ -53,5 +57,8 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    fun setUrl(url:String){
+        urlMuLivedata.value=url
+    }
 
 }

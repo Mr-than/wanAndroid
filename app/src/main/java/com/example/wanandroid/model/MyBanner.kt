@@ -6,7 +6,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.wanandroid.R
-import com.example.wanandroid.base.APP
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
@@ -87,6 +85,7 @@ class MyBanner {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerViewHolder {
+
             return InnerViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.banner_layout,parent,false))
         }
 

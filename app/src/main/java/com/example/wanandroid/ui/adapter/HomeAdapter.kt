@@ -1,7 +1,7 @@
 package com.example.wanandroid.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +11,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.request.RequestOptions
 import com.example.wanandroid.R
-import com.example.wanandroid.base.APP
 import com.example.wanandroid.databean.applicationdata.Article
 import com.example.wanandroid.model.MyBanner
-import com.example.wanandroid.requestinterfaces.BannerPhoto
-import com.example.wanandroid.retrofit.MyRetrofit
-import com.google.gson.JsonObject
+import com.example.wanandroid.ui.home.HomeViewModel
 
-class HomeAdapter(private val list:ArrayList<Article>,private val context:Context) : RecyclerView.Adapter<HomeAdapter.BaseViewHolder>() {
+class HomeAdapter(private val list:ArrayList<Article>,private val context:Context,val viewModel: HomeViewModel) : RecyclerView.Adapter<HomeAdapter.BaseViewHolder>() {
 
     companion object{
         const val photoItem:Int=1
@@ -40,12 +35,12 @@ class HomeAdapter(private val list:ArrayList<Article>,private val context:Contex
 
     private lateinit var bannerList:List<String>
 
-    private val aList= ArrayList<Article>()
+    private val mList= ArrayList<Article>()
     init {
-        aList.add(Article(-1,"","","","","","","","",false,false))
-        aList.addAll(list)
-        aList.add(Article(-1,"","","","","","","","",false,false))
-        aList.add(Article(-1,"","","","","","","","",false,false))
+        mList.add(Article(-1,"","","","","","","","", fresh = false, top = false))
+        mList.addAll(list)
+        mList.add(Article(-1,"","","","","","","","", fresh = false, top = false))
+        mList.add(Article(-1,"","","","","","","","", fresh = false, top = false))
     }
 
     private val a = MyBanner()
@@ -53,7 +48,17 @@ class HomeAdapter(private val list:ArrayList<Article>,private val context:Contex
     var vp:ViewPager2?=null
 
 
-    abstract inner class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    abstract inner class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        init {
+            itemView.setOnClickListener{
+                val position=bindingAdapterPosition
+                val url=mList[position].getUrl()
+                viewModel.setUrl(url)
+            }
+
+        }
+
+    }
     inner class HeaderHolder(itemView: View) : BaseViewHolder(itemView){
         var vp2:ViewPager2?
         init {
@@ -119,11 +124,11 @@ class HomeAdapter(private val list:ArrayList<Article>,private val context:Contex
         val so:TextView=itemView.findViewById(R.id.tree_colors_item_source)
     }
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when(viewType){
-            header-> HeaderHolder(LayoutInflater.from(parent.context).inflate(R.layout.vp,parent,false))
+            header->{
+                HeaderHolder(LayoutInflater.from(parent.context).inflate(R.layout.vp,parent,false))
+            }
 
             folder-> FlooderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.flooer_item,parent,false))
             empty-> EmptyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.empty_item,parent,false))
@@ -138,6 +143,7 @@ class HomeAdapter(private val list:ArrayList<Article>,private val context:Contex
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
 
 
@@ -150,73 +156,73 @@ class HomeAdapter(private val list:ArrayList<Article>,private val context:Contex
 
 
             is CommendHolder->{
-                holder.au.text = aList[position].getAuName()
-                holder.data.text=aList[position].getShareData()
-                holder.kind.text=aList[position].getChapterName()+"/"+aList[position].getSuperChapterName()
-                holder.content.text=aList[position].getContent()
+                holder.au.text = mList[position].getAuName()
+                holder.data.text=mList[position].getShareData()
+                holder.kind.text=mList[position].getChapterName()+"/"+mList[position].getSuperChapterName()
+                holder.content.text=mList[position].getContent()
             }
             is PhotoViewHolder->{
-                Glide.with(context).load(aList[position].getPhoto()).into(holder.photo)
-                holder.au.text = aList[position].getAuName()
-                holder.data.text=aList[position].getShareData()
-                holder.kind.text=aList[position].getChapterName()+"/"+aList[position].getSuperChapterName()
-                holder.content.text=aList[position].getContent()
-                holder.so.text=aList[position].getSource()
+                Glide.with(context).load(mList[position].getPhoto()).into(holder.photo)
+                holder.au.text = mList[position].getAuName()
+                holder.data.text=mList[position].getShareData()
+                holder.kind.text=mList[position].getChapterName()+"/"+mList[position].getSuperChapterName()
+                holder.content.text=mList[position].getContent()
+                holder.so.text=mList[position].getSource()
             }
             is JustRedViewHolder->{
-                holder.au.text = aList[position].getAuName()
-                holder.data.text=aList[position].getShareData()
-                holder.kind.text=aList[position].getChapterName()+"/"+aList[position].getSuperChapterName()
-                holder.content.text=aList[position].getContent()
+                holder.au.text = mList[position].getAuName()
+                holder.data.text=mList[position].getShareData()
+                holder.kind.text=mList[position].getChapterName()+"/"+mList[position].getSuperChapterName()
+                holder.content.text=mList[position].getContent()
             }
             is JustBlueViewHolder->{
-                holder.so.text=aList[position].getSource()
-                holder.au.text = aList[position].getAuName()
-                holder.data.text=aList[position].getShareData()
-                holder.kind.text=aList[position].getChapterName()+"/"+aList[position].getSuperChapterName()
-                holder.content.text=aList[position].getContent()
+                holder.so.text=mList[position].getSource()
+                holder.au.text = mList[position].getAuName()
+                holder.data.text=mList[position].getShareData()
+                holder.kind.text=mList[position].getChapterName()+"/"+mList[position].getSuperChapterName()
+                holder.content.text=mList[position].getContent()
             }
             is FirstTopViewHolder->{
-                holder.au.text = aList[position].getAuName()
-                holder.data.text=aList[position].getShareData()
-                holder.kind.text=aList[position].getChapterName()+"/"+aList[position].getSuperChapterName()
-                holder.content.text=aList[position].getContent()
+                holder.au.text = mList[position].getAuName()
+                holder.data.text=mList[position].getShareData()
+                holder.kind.text=mList[position].getChapterName()+"/"+mList[position].getSuperChapterName()
+                holder.content.text=mList[position].getContent()
             }
             is RedAndBlueViewHolder->{
-                holder.so.text=aList[position].getSource()
-                holder.au.text = aList[position].getAuName()
-                holder.data.text=aList[position].getShareData()
-                holder.kind.text=aList[position].getChapterName()+"/"+aList[position].getSuperChapterName()
-                holder.content.text=aList[position].getContent()
+                holder.so.text=mList[position].getSource()
+                holder.au.text = mList[position].getAuName()
+                holder.data.text=mList[position].getShareData()
+                holder.kind.text=mList[position].getChapterName()+"/"+mList[position].getSuperChapterName()
+                holder.content.text=mList[position].getContent()
             }
             is TreeColorsViewHolder->{
-                holder.so.text=aList[position].getSource()
-                holder.au.text = aList[position].getAuName()
-                holder.data.text=aList[position].getShareData()
-                holder.kind.text=aList[position].getChapterName()+"/"+aList[position].getSuperChapterName()
-                holder.content.text=aList[position].getContent()
+                holder.so.text=mList[position].getSource()
+                holder.au.text = mList[position].getAuName()
+                holder.data.text=mList[position].getShareData()
+                holder.kind.text=mList[position].getChapterName()+"/"+mList[position].getSuperChapterName()
+                holder.content.text=mList[position].getContent()
             }
 
         }
     }
 
 
-    override fun getItemCount()=aList.size
+    override fun getItemCount()=mList.size
 
     override fun getItemViewType(position: Int): Int {
         if(position==0){
             return header
         }
-        if(position==aList.size-1){
+        if(position==mList.size-1){
             return empty
         }
-        if(position==aList.size-2){
+        if(position==mList.size-2){
             return folder
         }
 
 
 
-        return aList[position].getType()
+        return mList[position].getType()
     }
 
 
@@ -242,25 +248,19 @@ class HomeAdapter(private val list:ArrayList<Article>,private val context:Contex
             return false
         }
 
-        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any {
-
-            val newItem = newList[newItemPosition]
-
-            return Bundle()
-        }
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int)=""
 
     }
 
 
     fun update(newList:List<Article>){
-
         if(!hasData) {
             hasData=true
-            (newList as ArrayList).add(0, aList[0])
+            (newList as ArrayList).add(0, mList[0])
         }
-        val result:DiffUtil.DiffResult=DiffUtil.calculateDiff(UpData(aList,newList),true)
-        aList.clear()
-        aList.addAll(newList)
+        val result:DiffUtil.DiffResult=DiffUtil.calculateDiff(UpData(mList,newList),true)
+        mList.clear()
+        mList.addAll(newList)
         result.dispatchUpdatesTo(this)
 
     }
